@@ -275,8 +275,8 @@ class Renderer3D {
       const sy = sp.y - posY;
 
       // Transform into camera space.
-      const tX = ( pY * sx - pX * sy) / det;   // horizontal (left/right)
-      const tY = (-dY * sx + dX * sy) / det;   // depth
+      const tX = (-dY * sx + dX * sy) / det;   // horizontal (left/right)
+      const tY = ( pY * sx - pX * sy) / det;   // depth
 
       if (tY <= 0.1) continue;   // behind or too close
 
