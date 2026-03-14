@@ -1620,7 +1620,12 @@ class Game {
         let moved = false;
         if (this.gameMode === '3d') {
           if      (moveDir === D.N) { moved = this._stepPlayer(this.player.dir); }
-          else if (moveDir === D.S) { moved = this._stepPlayer(OPPOSITE[this.player.dir]); }
+          else if (moveDir === D.S) {
+            // Move backward without changing the player's facing direction.
+            const facing = this.player.dir;
+            moved = this._stepPlayer(OPPOSITE[facing]);
+            this.player.dir = facing;   // restore facing after _stepPlayer sets it
+          }
           else if (moveDir === D.W) { this.player.dir = LEFT_OF[this.player.dir]; }
           else if (moveDir === D.E) { this.player.dir = RIGHT_OF[this.player.dir]; }
         } else {
@@ -1680,6 +1685,11 @@ class Game {
 
     // Shared helper: begin playing in the given mode from level 0.
     const _startGame = (mode) => {
+      // Clear any stale input state accumulated while on the title screen.
+      this.keysHeld.clear();
+      this.queuedDir = null;
+      this.lastMove  = 0;
+
       this.gameMode  = mode;
       this.renderer  = mode === '3d' ? new Renderer3D(canvas) : new Renderer(canvas);
       this.audio._resume();
@@ -1717,6 +1727,10 @@ class Game {
     document.getElementById('play-again-btn').addEventListener('click', () => {
       if (this.rafId) { cancelAnimationFrame(this.rafId); this.rafId = null; }
       this.running = false;
+      // Clear input state so no key-press leaks into the next game start.
+      this.keysHeld.clear();
+      this.queuedDir = null;
+      this.lastMove  = 0;
       this._showScreen('title-screen');
     });
   }

@@ -55,6 +55,11 @@ class Renderer3D {
       [T.TELEPORT]:      { color: '#9933ff', sym: '✦'  },
     };
 
+    // Pre-allocate the floor ImageData buffer – reused every frame to avoid
+    // repeated GC pressure from createImageData inside the render loop.
+    const half = this.H >> 1;
+    this._floorBuf = this.ctx.createImageData(this.W, half);
+
     // Minimap direction arrow vectors – built once.
     this._arrowDirs = {
       [D.N]: [0, -1], [D.E]: [1, 0], [D.S]: [0, 1], [D.W]: [-1, 0],
@@ -90,7 +95,8 @@ class Renderer3D {
     ctx.fillRect(0, 0, W, half);
 
     // Floor: per-pixel tile-colour floor casting.
-    const buf = ctx.createImageData(W, half);
+    // Reuse the pre-allocated ImageData buffer (avoids per-frame GC pressure).
+    const buf = this._floorBuf;
     const d   = buf.data;
 
     for (let row = 1; row <= half; row++) {
@@ -292,7 +298,7 @@ class Renderer3D {
         if (tY >= this.zBuf[col]) continue;   // occluded by wall
         const tx = Math.floor((col - x0) / sW * 4);
         ctx.globalAlpha = tx % 2 === 0 ? 1.0 : 0.65;
-        ctx.fillRect(col, y0, 1, y1 - y0);
+        ctx.fillRect(col, y0, 1, y1 - y0 + 1);
         anyVisible = true;
       }
       ctx.globalAlpha = 1;
