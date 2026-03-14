@@ -710,7 +710,7 @@ class Renderer {
     ctx.fillStyle = 'rgba(0,0,0,0.25)';
     const mid = Math.floor(ts / 2);
     ctx.fillRect(sx + 4, sy + mid - 1, ts - 8, 2);
-    // Vertical dividers alternating per row
+    // Alternating brick vertical dividers (0.35 / 0.65 of tile width = 35% and 65%)
     const vert = ((sx / ts + sy / ts) % 2 === 0) ? ts * 0.35 : ts * 0.65;
     ctx.fillRect(sx + Math.round(vert), sy + 4, 2, mid - 5);
     const vert2 = ((sx / ts + sy / ts) % 2 === 0) ? ts * 0.65 : ts * 0.35;

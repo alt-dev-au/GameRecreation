@@ -123,12 +123,13 @@ class Renderer3D {
         const tile = game.getTile(cx, cy);
 
         let r, g, b;
+        // RGB floor/tile colours matching the retro-neon palette.
         switch (tile) {
-          case T.WATER:                                           r=0;   g=55;  b=180; break;
-          case T.FIRE:                                            r=180; g=40;  b=0;   break;
+          case T.WATER:                                           r=0;   g=55;  b=180; break;  // deep ocean blue
+          case T.FIRE:                                            r=180; g=40;  b=0;   break;  // hot orange
           case T.ICE: case T.ICE_NE: case T.ICE_NW:
-          case T.ICE_SE: case T.ICE_SW:                          r=140; g=200; b=240; break;
-          case T.EXIT:                                            r=30;  g=200; b=10;  break;
+          case T.ICE_SE: case T.ICE_SW:                          r=140; g=200; b=240; break;  // crisp ice blue
+          case T.EXIT:                                            r=30;  g=200; b=10;  break;  // neon green
           case T.DIRT:                                            r=100; g=60;  b=28;  break;
           case T.GRAVEL:                                          r=80;  g=80;  b=95;  break;
           case T.HINT:                                            r=180; g=160; b=0;   break;
