@@ -1242,7 +1242,7 @@ class Game {
     for (const ent of this.entities) {
       if (ent.alive && ent.type !== E.PLAYER && ent.type !== E.BLOCK) {
         if (ent.x === nx && ent.y === ny) {
-          this._killPlayer('Chip was caught by an enemy!');
+          this._killPlayer('Shmo was caught by an enemy!');
           return true;
         }
       }
@@ -1272,18 +1272,18 @@ class Game {
     }
 
     if (tile === T.WATER && !this.inventory.boots.has(T.FLIPPERS)) {
-      this._killPlayer('Chip drowned!');
+      this._killPlayer('Shmo drowned!');
       return;
     }
 
     if (tile === T.FIRE && !this.inventory.boots.has(T.FIRE_BOOTS)) {
-      this._killPlayer('Chip burned up!');
+      this._killPlayer('Shmo burned up!');
       return;
     }
 
     if (tile === T.BOMB) {
       this.setTile(x, y, T.FLOOR);
-      this._killPlayer('Chip hit a bomb!');
+      this._killPlayer('Shmo hit a bomb!');
       return;
     }
 
@@ -1428,7 +1428,7 @@ class Game {
 
       // Kill player if enemy lands on them
       if (ent.x === this.player.x && ent.y === this.player.y) {
-        this._killPlayer('Chip was caught by an enemy!');
+        this._killPlayer('Shmo was caught by an enemy!');
       }
     }
   }
@@ -1637,7 +1637,7 @@ class Game {
           for (const ent of this.entities) {
             if (ent.alive && ent.type !== E.PLAYER && ent.type !== E.BLOCK) {
               if (ent.x === this.player.x && ent.y === this.player.y) {
-                this._killPlayer('Chip was caught by an enemy!');
+                this._killPlayer('Shmo was caught by an enemy!');
                 break;
               }
             }

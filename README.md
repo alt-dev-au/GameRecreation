@@ -1,6 +1,6 @@
-# Chip's Challenge — Web Recreation
+# Shmo's Shenanigans
 
-A browser-based recreation of the classic puzzle game **Chip's Challenge**, built with vanilla JavaScript, HTML5 Canvas, and CSS. Play in classic 2D top-down view or switch to an immersive first-person 3D raycasting mode.
+A browser-based web game built with vanilla JavaScript, HTML5 Canvas, and CSS. Play in classic 2D top-down view or switch to an immersive first-person 3D raycasting mode.
 
 ---
 
@@ -14,7 +14,7 @@ No installation required — just open the link in any modern browser and start 
 
 ## About the Game
 
-Chip's Challenge is a tile-based puzzle game where you guide Chip through maze-like levels filled with hazards, locked doors, and collectibles. Your goal is to gather all the computer chips on each level and reach the exit before time runs out.
+Shmo's Shenanigans is a tile-based puzzle game where you guide Shmo through maze-like levels filled with hazards, locked doors, and collectibles. Your goal is to gather all the computer chips on each level and reach the exit before time runs out.
 
 This recreation includes:
 
