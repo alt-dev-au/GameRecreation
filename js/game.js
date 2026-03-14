@@ -76,6 +76,7 @@ const FORCE_TILES = new Set([T.FORCE_N, T.FORCE_S, T.FORCE_E, T.FORCE_W]);
 const KEY_TILES   = new Set([T.KEY_BLUE, T.KEY_RED, T.KEY_YELLOW, T.KEY_GREEN]);
 const BOOT_TILES  = new Set([T.FLIPPERS, T.FIRE_BOOTS, T.ICE_SKATES, T.SUCTION_BOOTS]);
 const DOOR_TILES  = new Set([T.DOOR_BLUE, T.DOOR_RED, T.DOOR_YELLOW, T.DOOR_GREEN]);
+const ENEMY_BLOCKED_TILES = new Set([T.WALL, T.DIRT, T.TOGGLE_CLOSED]);
 
 // Map key→door
 const KEY_FOR_DOOR = {
@@ -278,10 +279,7 @@ const _L5_MAP = [
   /*r14*/ [1, 0, 0, 2, 0, 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 1],  // chips(3,14)(12,14) exit(8,14)
   /*r15*/ [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
-// chips: (3,3)(12,3)(3,10)(11,10)(3,14)(12,14) = 6 + hint tiles = 8 total NOT right
-// Let me add 2 more chips:
-//   (3,12) and (12,12) → set those cells to CHIP in row12
-// [Correction applied inline below via the LEVELS array]
+// Level 5 chip positions: rows 3, 10, 12, 14 (8 chips total)
 
 // ── Assemble LEVELS array ───────────────────────────────────
 
@@ -443,6 +441,7 @@ class Renderer {
       return (order[a.type] || 1) - (order[b.type] || 1);
     });
     for (const ent of sorted) {
+      if (!ent.alive) continue;
       const sx = (ent.x - camX) * ts;
       const sy = (ent.y - camY) * ts;
       if (sx < -ts || sy < -ts || sx > VIEW_W * ts || sy > VIEW_H * ts) continue;
@@ -1138,8 +1137,7 @@ class Game {
     if (nx < 0 || ny < 0 || nx >= this.mapW || ny >= this.mapH) return false;
     const tile = this.getTile(nx, ny);
     // Enemies can't walk through walls, dirt, clone machines, toggle-closed
-    const blocked = new Set([T.WALL, T.DIRT, T.TOGGLE_CLOSED]);
-    if (blocked.has(tile)) return false;
+    if (ENEMY_BLOCKED_TILES.has(tile)) return false;
     // Doors block enemies
     if (DOOR_TILES.has(tile)) return false;
     // Bombs kill enemies... or block them depending on type
@@ -1205,14 +1203,25 @@ class Game {
       const by = blockEnt.y + DY[dir];
       blockEnt.x = bx;
       blockEnt.y = by;
-      // Block landing on water → become gravel
+      // Block landing on water → become gravel; remove the block entity
       if (this.getTile(bx, by) === T.WATER) {
         this.setTile(bx, by, T.GRAVEL);
+        blockEnt.alive = false;
       }
     }
 
     this.player.x = nx;
     this.player.y = ny;
+
+    // Check if the player walked into an enemy's current position
+    for (const ent of this.entities) {
+      if (ent.alive && ent.type !== E.PLAYER && ent.type !== E.BLOCK) {
+        if (ent.x === nx && ent.y === ny) {
+          this._killPlayer('Chip was caught by an enemy!');
+          return true;
+        }
+      }
+    }
 
     this._handleTile(nx, ny);
     return true;
@@ -1645,6 +1654,7 @@ class Game {
       this._showScreen('game-screen');
       this.running   = true;
       this.lastTick  = null;
+      if (this.rafId) cancelAnimationFrame(this.rafId);
       this.rafId = requestAnimationFrame(ts => this._tick(ts));
     });
 
