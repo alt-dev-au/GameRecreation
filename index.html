@@ -17,9 +17,13 @@
           <h1>CHIP'S<br>CHALLENGE</h1>
         </div>
         <p class="subtitle">A Web Recreation of the Classic Puzzle Game</p>
-        <button id="start-btn" class="btn-primary">▶ START GAME</button>
+        <div class="mode-select">
+          <button id="start-2d-btn" class="btn-primary">▶ PLAY 2D</button>
+          <button id="start-3d-btn" class="btn-primary btn-3d">▶ PLAY 3D</button>
+        </div>
         <div class="controls-hint">
-          <p>Arrow Keys / WASD to move</p>
+          <p>2D mode: Arrow Keys / WASD to move in any direction</p>
+          <p>3D mode: ↑↓ Move forward/back &nbsp;·&nbsp; ←→ Turn</p>
           <p>Collect all chips ★ then reach the exit</p>
         </div>
       </div>
@@ -121,5 +125,6 @@
   </div>
 
   <script src="js/game.js"></script>
+  <script src="js/renderer3d.js"></script>
 </body>
 </html>

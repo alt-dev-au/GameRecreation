@@ -89,6 +89,9 @@ const KEY_FOR_DOOR = {
 // Reusable (infinite) keys
 const REUSABLE_KEYS = new Set([T.KEY_GREEN]);
 
+// Preferred scan order when auto-orienting the player on 3D level start
+const OPEN_DIR_SCAN = [D.E, D.N, D.S, D.W];
+
 // Force floor direction map
 const FORCE_DIR = {
   [T.FORCE_N]: D.N,
@@ -954,6 +957,7 @@ class EntityState {
 class Game {
   constructor() {
     this.currentLevel = 0;
+    this.gameMode     = '2d';   // '2d' or '3d'
     this.audio        = new AudioManager();
     this.renderer     = null;
     this.running      = false;
@@ -992,6 +996,13 @@ class Game {
 
     this.player = new EntityState({ type: E.PLAYER, x: def.playerStart.x, y: def.playerStart.y, dir: D.S });
 
+    // In 3D mode, orient the player toward the first open direction so they
+    // don't spawn staring at a wall (all levels start in the top-left corner
+    // where East leads into the opening corridor).
+    if (this.gameMode === '3d') {
+      this.player.dir = this._openStartDir(this.player.x, this.player.y);
+    }
+
     this.entities = [
       this.player,
       ...def.entities.map(e => new EntityState(e)),
@@ -1011,6 +1022,20 @@ class Game {
     this.hintShown = false;
 
     this._updateHUD(def);
+  }
+
+  // Return the first non-wall direction from (x,y); used to orient the
+  // player on level start in 3D mode.
+  _openStartDir(x, y) {
+    for (const dir of OPEN_DIR_SCAN) {
+      const nx = x + DX[dir];
+      const ny = y + DY[dir];
+      const tile = this.getTile(nx, ny);
+      if (tile !== T.WALL && !DOOR_TILES.has(tile) && tile !== T.TOGGLE_CLOSED) {
+        return dir;
+      }
+    }
+    return D.E;
   }
 
   _updateHUD(def) {
@@ -1590,7 +1615,17 @@ class Game {
       }
 
       if (moveDir !== null) {
-        const moved = this._stepPlayer(moveDir);
+        // In 3D mode ↑↓ move forward/back; ←→ turn the player.
+        // In 2D mode all four directions move directly.
+        let moved = false;
+        if (this.gameMode === '3d') {
+          if      (moveDir === D.N) { moved = this._stepPlayer(this.player.dir); }
+          else if (moveDir === D.S) { moved = this._stepPlayer(OPPOSITE[this.player.dir]); }
+          else if (moveDir === D.W) { this.player.dir = LEFT_OF[this.player.dir]; }
+          else if (moveDir === D.E) { this.player.dir = RIGHT_OF[this.player.dir]; }
+        } else {
+          moved = this._stepPlayer(moveDir);
+        }
         if (moved && !this.dead && !this.won) {
           this._stepEnemies();
           // Check if enemy landed on player after move
@@ -1641,22 +1676,27 @@ class Game {
   }
 
   start() {
-    const canvas   = document.getElementById('game-canvas');
-    this.renderer  = new Renderer(canvas);
+    const canvas = document.getElementById('game-canvas');
 
-    // Buttons
-    document.getElementById('start-btn').addEventListener('click', () => {
+    // Shared helper: begin playing in the given mode from level 0.
+    const _startGame = (mode) => {
+      this.gameMode  = mode;
+      this.renderer  = mode === '3d' ? new Renderer3D(canvas) : new Renderer(canvas);
       this.audio._resume();
-      this.currentLevel   = 0;
-      this._deathHandled  = false;
-      this._winHandled    = false;
+      this.currentLevel  = 0;
+      this._deathHandled = false;
+      this._winHandled   = false;
       this.loadLevel(0);
       this._showScreen('game-screen');
-      this.running   = true;
-      this.lastTick  = null;
+      this.running  = true;
+      this.lastTick = null;
       if (this.rafId) cancelAnimationFrame(this.rafId);
       this.rafId = requestAnimationFrame(ts => this._tick(ts));
-    });
+    };
+
+    // Mode-select buttons on the title screen.
+    document.getElementById('start-2d-btn').addEventListener('click', () => _startGame('2d'));
+    document.getElementById('start-3d-btn').addEventListener('click', () => _startGame('3d'));
 
     document.getElementById('next-level-btn').addEventListener('click', () => {
       this.currentLevel++;
@@ -1673,16 +1713,11 @@ class Game {
     document.getElementById('retry-btn').addEventListener('click', () => this._retryLevel());
     document.getElementById('timeout-retry-btn').addEventListener('click', () => this._retryLevel());
 
+    // "Play Again" returns to the title screen so the player can re-choose mode.
     document.getElementById('play-again-btn').addEventListener('click', () => {
-      this.currentLevel  = 0;
-      this._deathHandled = false;
-      this._winHandled   = false;
-      this.loadLevel(0);
-      this._showScreen('game-screen');
-      this.running  = true;
-      this.lastTick = null;
-      if (this.rafId) cancelAnimationFrame(this.rafId);
-      this.rafId = requestAnimationFrame(ts => this._tick(ts));
+      if (this.rafId) { cancelAnimationFrame(this.rafId); this.rafId = null; }
+      this.running = false;
+      this._showScreen('title-screen');
     });
   }
 
