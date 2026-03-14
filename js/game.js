@@ -511,13 +511,15 @@ const LEVELS = [
   {
     number: 8,
     title:  'Power Surge',
-    hint:   'Press the GREEN BUTTON to open the toggle doors.  The BLUE BUTTON reverses nearby tanks.  Watch out for the bouncing ball!',
+    hint:   'Press the GREEN BUTTON to open the toggle doors.  The BLUE BUTTON reverses the tanks patrolling the lower corridor!',
     timeLimit: 200,
     map:    _copyMap(_L8_MAP),
     playerStart: { x: 1, y: 1 },
     entities: [
-      { type: E.BALL,  x: 7, y: 7,  dir: D.E },  // bounces across middle chip row
-      { type: E.TEETH, x: 8, y: 11, dir: D.N },  // chases player in lower room
+      { type: E.BALL,  x: 7,  y: 7,  dir: D.E },  // bounces across middle chip row
+      { type: E.TEETH, x: 8,  y: 11, dir: D.N },  // chases player in lower room
+      { type: E.TANK,  x: 5,  y: 13, dir: D.E },  // patrols lower corridor → (reversed by blue btn)
+      { type: E.TANK,  x: 11, y: 13, dir: D.W },  // patrols lower corridor ← (reversed by blue btn)
     ],
     width:  16,
     height: 16,

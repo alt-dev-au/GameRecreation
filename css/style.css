@@ -69,14 +69,14 @@ html, body {
   align-items: center;
   justify-content: center;
   text-shadow: 0 0 12px var(--accent);
-  box-shadow: 0 0 20px rgba(255,204,0,0.3);
+  box-shadow: 0 0 20px rgba(0,255,238,0.3);
 }
 
 #title-screen h1 {
   font-size: clamp(28px, 8vw, 48px);
   color: var(--accent);
   line-height: 1.1;
-  text-shadow: 0 0 16px rgba(255,204,0,0.6);
+  text-shadow: 0 0 16px rgba(0,255,238,0.6);
   letter-spacing: 4px;
 }
 
@@ -99,12 +99,12 @@ html, body {
   cursor: pointer;
   border-radius: 4px;
   transition: all 0.15s;
-  box-shadow: 0 4px 16px rgba(255,204,0,0.4);
+  box-shadow: 0 4px 16px rgba(0,255,238,0.4);
 }
 .btn-primary:hover, .btn-primary:focus {
-  background: #ffe033;
+  background: #66ffee;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255,204,0,0.6);
+  box-shadow: 0 6px 20px rgba(0,255,238,0.6);
 }
 .btn-primary:active { transform: translateY(0); }
 
@@ -125,11 +125,11 @@ html, body {
 
 .btn-3d {
   background: var(--accent2);
-  box-shadow: 0 4px 16px rgba(68,170,255,0.4);
+  box-shadow: 0 4px 16px rgba(170,0,255,0.4);
 }
 .btn-3d:hover, .btn-3d:focus {
-  background: #66bbff;
-  box-shadow: 0 6px 20px rgba(68,170,255,0.6);
+  background: #cc44ff;
+  box-shadow: 0 6px 20px rgba(170,0,255,0.6);
 }
 
 /* ── HUD ─────────────────────────────────────────────── */
@@ -170,7 +170,7 @@ html, body {
   font-weight: bold;
   color: var(--accent);
   line-height: 1;
-  text-shadow: 0 0 8px rgba(255,204,0,0.4);
+  text-shadow: 0 0 8px rgba(0,255,238,0.4);
   min-width: 2ch;
   text-align: center;
 }
@@ -316,7 +316,7 @@ html, body {
   font-size: clamp(24px, 6vw, 40px);
   color: var(--accent);
   letter-spacing: 3px;
-  text-shadow: 0 0 16px rgba(255,204,0,0.5);
+  text-shadow: 0 0 16px rgba(0,255,238,0.5);
 }
 
 .overlay-content p {
