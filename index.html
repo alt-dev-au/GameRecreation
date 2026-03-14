@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Chip's Challenge Web</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- Title Screen -->
+    <div id="title-screen" class="screen active">
+      <div class="title-content">
+        <div class="title-logo">
+          <div class="title-chip">C</div>
+          <h1>CHIP'S<br>CHALLENGE</h1>
+        </div>
+        <p class="subtitle">A Web Recreation of the Classic Puzzle Game</p>
+        <button id="start-btn" class="btn-primary">▶ START GAME</button>
+        <div class="controls-hint">
+          <p>Arrow Keys / WASD to move</p>
+          <p>Collect all chips ★ then reach the exit</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+      <div id="hud">
+        <div class="hud-left">
+          <div class="hud-block">
+            <div class="hud-label">LEVEL</div>
+            <div id="hud-level" class="hud-value">1</div>
+          </div>
+          <div class="hud-block">
+            <div class="hud-label">TIME</div>
+            <div id="hud-time" class="hud-value">---</div>
+          </div>
+          <div class="hud-block">
+            <div class="hud-label">CHIPS LEFT</div>
+            <div id="hud-chips" class="hud-value">0</div>
+          </div>
+        </div>
+        <div class="hud-right">
+          <div class="hud-block">
+            <div class="hud-label">KEYS</div>
+            <div id="hud-keys" class="inv-row"></div>
+          </div>
+          <div class="hud-block">
+            <div class="hud-label">BOOTS</div>
+            <div id="hud-boots" class="inv-row"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="canvas-wrap">
+        <canvas id="game-canvas"></canvas>
+        <div id="hint-banner" class="hidden">
+          <span id="hint-text"></span>
+          <button id="hint-close">✕</button>
+        </div>
+      </div>
+
+      <div id="level-title-bar">
+        <span id="level-title-text"></span>
+      </div>
+
+      <div id="mobile-controls">
+        <div class="mc-row">
+          <button class="mc-btn" id="mc-up" aria-label="Move up">▲</button>
+        </div>
+        <div class="mc-row">
+          <button class="mc-btn" id="mc-left" aria-label="Move left">◄</button>
+          <button class="mc-btn" id="mc-down" aria-label="Move down">▼</button>
+          <button class="mc-btn" id="mc-right" aria-label="Move right">►</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Level Complete Screen -->
+    <div id="win-screen" class="screen">
+      <div class="overlay-content">
+        <div class="overlay-icon">🏆</div>
+        <h2>Level Complete!</h2>
+        <p id="win-msg"></p>
+        <button id="next-level-btn" class="btn-primary">NEXT LEVEL ►</button>
+      </div>
+    </div>
+
+    <!-- Death Screen -->
+    <div id="death-screen" class="screen">
+      <div class="overlay-content">
+        <div class="overlay-icon">💀</div>
+        <h2>OOPS!</h2>
+        <p id="death-msg">Chip didn't make it...</p>
+        <button id="retry-btn" class="btn-primary">TRY AGAIN</button>
+      </div>
+    </div>
+
+    <!-- Time Up Screen -->
+    <div id="timeout-screen" class="screen">
+      <div class="overlay-content">
+        <div class="overlay-icon">⏰</div>
+        <h2>OUT OF TIME!</h2>
+        <p>Chip ran out of time!</p>
+        <button id="timeout-retry-btn" class="btn-primary">TRY AGAIN</button>
+      </div>
+    </div>
+
+    <!-- Game Complete Screen -->
+    <div id="complete-screen" class="screen">
+      <div class="overlay-content">
+        <div class="overlay-icon">🎉</div>
+        <h1>YOU WIN!</h1>
+        <p>Congratulations! You completed all levels of Chip's Challenge!</p>
+        <button id="play-again-btn" class="btn-primary">PLAY AGAIN</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/game.js"></script>
+</body>
+</html>
