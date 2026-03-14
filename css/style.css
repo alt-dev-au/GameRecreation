@@ -115,6 +115,23 @@ html, body {
   line-height: 2;
 }
 
+/* ── Mode-select buttons on title screen ─────────────────── */
+.mode-select {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-3d {
+  background: var(--accent2);
+  box-shadow: 0 4px 16px rgba(68,170,255,0.4);
+}
+.btn-3d:hover, .btn-3d:focus {
+  background: #66bbff;
+  box-shadow: 0 6px 20px rgba(68,170,255,0.6);
+}
+
 /* ── HUD ─────────────────────────────────────────────── */
 #hud {
   display: flex;
