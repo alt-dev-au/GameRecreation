@@ -284,6 +284,132 @@ const _L5_MAP = [
 ];
 // Level 5 chip positions: rows 3, 10, 12, 14 (8 chips total)
 
+// ── LEVEL 6: Warp Zone ──────────────────────────────────────
+// Symmetric two-room layout with 4 teleporters as shortcuts.
+// T0=(7,3)→T1=(7,11): jumps to lower room.
+// T2=(3,14)→T3=(12,14)→T0: loops back to top.
+// 5 chips, no enemies, no time limit.
+const _L6_MAP = [
+  /*r0*/  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  /*r1*/  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],  // top corridor
+  /*r2*/  [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],  // gap@col3, col12
+  /*r3*/  [1, 1, 1, 0, 2, 0, 0,24, 0, 0, 2, 0, 0, 1, 1, 1],  // chips@(4,3)(10,3) tp@(7,3)
+  /*r4*/  [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+  /*r5*/  [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+  /*r6*/  [1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],  // gap@col7, col8
+  /*r7*/  [1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1],  // chip@(7,7)
+  /*r8*/  [1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],  // gap@col7, col8
+  /*r9*/  [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+  /*r10*/ [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+  /*r11*/ [1, 1, 1, 0, 2, 0, 0,24, 0, 0, 2, 0, 0, 1, 1, 1],  // chips@(4,11)(10,11) tp@(7,11)
+  /*r12*/ [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],  // gap@col3, col12
+  /*r13*/ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],  // bottom corridor
+  /*r14*/ [1, 0, 0,24, 0, 0, 0,23, 3, 0, 0, 0,24, 0, 0, 1],  // tp@(3,14) hint@(7,14) exit@(8,14) tp@(12,14)
+  /*r15*/ [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+];
+// chips: (4,3)(10,3)(7,7)(4,11)(10,11) = 5   exit: (8,14)
+// teleports T0=(7,3)→T1=(7,11)→T2=(3,14)→T3=(12,14)→T0
+
+// ── LEVEL 7: Ice World ──────────────────────────────────────
+// Upper dry rooms contain flippers.  Row 7 is a full ICE corridor
+// with dry gaps at col 3 and col 12 for safe passage.
+// Lower water zone: needs flippers to reach two embedded chips.
+// Optional ice-skates pickup in row 9.  6 chips, no enemies.
+const _L7_MAP = [
+  /*r0*/  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  /*r1*/  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  /*r2*/  [1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1],  // gap@col1,4,11,14
+  /*r3*/  [1, 0, 1, 2, 0, 0, 0,17, 0, 0, 2, 0, 0, 1, 0, 1],  // chips@(3,3)(10,3) flippers@(7,3)
+  /*r4*/  [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+  /*r5*/  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  /*r6*/  [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],  // gap@col3, col12
+  /*r7*/  [1, 6, 6, 0, 6, 6, 6, 6, 6, 6, 6, 6, 0, 6, 6, 1],  // ICE except dry@col3,col12
+  /*r8*/  [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],  // gap@col3, col12
+  /*r9*/  [1, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 1],  // ice_skates@(7,9) optional
+  /*r10*/ [1, 1, 1, 0, 1, 4, 4, 4, 4, 4, 4, 1, 0, 1, 1, 1],  // water@5-10; dry@col3,col12
+  /*r11*/ [1, 4, 4, 0, 4, 4, 2, 4, 2, 4, 4, 4, 0, 4, 4, 1],  // water; chips@(6,11)(8,11)
+  /*r12*/ [1, 4, 4, 0, 4, 4, 4, 4, 4, 4, 4, 4, 0, 4, 4, 1],  // water
+  /*r13*/ [1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 1],  // chips@(7,13)(11,13)
+  /*r14*/ [1, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1],  // exit@(7,14)
+  /*r15*/ [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+];
+// chips: (3,3)(10,3)(6,11)(8,11)(7,13)(11,13) = 6   exit: (7,14)
+
+// ── LEVEL 8: Power Surge ────────────────────────────────────
+// Toggle doors at rows 6 and 8 seal the middle section.
+// Press the GREEN BUTTON @(6,3) in the upper room to open them.
+// Blue button @(7,11) in the lower room reverses the tanks.
+// 6 chips, 2 enemies (Ball + Teeth), time limit 200 s.
+const _L8_MAP = [
+  /*r0*/  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  /*r1*/  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  /*r2*/  [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],  // gap@col1, col14
+  /*r3*/  [1, 0, 1, 2, 0, 0,31, 0, 0, 0, 2, 0, 0, 0, 0, 1],  // chips@(3,3)(10,3) green_btn@(6,3)
+  /*r4*/  [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+  /*r5*/  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],  // open — green btn accessible here
+  /*r6*/  [1,29, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,29, 1],  // TOGGLE_CLOSED@(1,6)(14,6)
+  /*r7*/  [1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1],  // chips@(4,7)(10,7)
+  /*r8*/  [1,29, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,29, 1],  // TOGGLE_CLOSED@(1,8)(14,8)
+  /*r9*/  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  /*r10*/ [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],  // gap@col3, col12
+  /*r11*/ [1, 1, 1, 0, 2, 0, 0,32, 0, 0, 2, 0, 0, 1, 1, 1],  // chips@(4,11)(10,11) blue_btn@(7,11)
+  /*r12*/ [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],  // gap@col3, col12
+  /*r13*/ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  /*r14*/ [1, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 1],  // exit@(8,14)
+  /*r15*/ [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+];
+// chips: (3,3)(10,3)(4,7)(10,7)(4,11)(10,11) = 6   exit: (8,14)
+
+// ── LEVEL 9: Bomb Run ───────────────────────────────────────
+// Bomb traps at (6,3)(8,3)(6,11)(8,11) — avoid columns 6 and 8
+// inside the two enclosed rooms.  Chips sit safely in other cells.
+// 7 chips, 3 enemies (Bug + Fireball + Teeth), time limit 250 s.
+const _L9_MAP = [
+  /*r0*/  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  /*r1*/  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  /*r2*/  [1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1],  // gap@col1,4,11,14
+  /*r3*/  [1, 0, 1, 2, 0, 0,22, 0,22, 0, 0, 2, 0, 1, 0, 1],  // chips@(3,3)(11,3) bombs@(6,3)(8,3)
+  /*r4*/  [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+  /*r5*/  [1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1],  // chip@(7,5)
+  /*r6*/  [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],  // gap@col3, col12
+  /*r7*/  [1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1],  // chip@(7,7) — middle
+  /*r8*/  [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],  // gap@col3, col12
+  /*r9*/  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  /*r10*/ [1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1],  // gap@col1,4,11,14
+  /*r11*/ [1, 0, 1, 2, 0, 0,22, 0,22, 0, 0, 2, 0, 1, 0, 1],  // chips@(3,11)(11,11) bombs@(6,11)(8,11)
+  /*r12*/ [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+  /*r13*/ [1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1],  // chip@(7,13)
+  /*r14*/ [1, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1],  // exit@(7,14)
+  /*r15*/ [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+];
+// chips: (3,3)(11,3)(7,5)(7,7)(3,11)(11,11)(7,13) = 7   exit: (7,14)
+
+// ── LEVEL 10: Neon Overdrive ────────────────────────────────
+// Grand finale: all terrain types in themed bands.
+//   Rows 7-8  : WATER zone — needs flippers (row 1) for side chips.
+//   Rows 12   : FIRE zone  — needs fire boots (row 1) for side chips.
+//   Row  13   : ICE + FORCE_E corridor (same as Gauntlet row 13).
+// 3 enemies (Bug, Fireball, Teeth), 8 chips, time limit 400 s.
+const _L10_MAP = [
+  /*r0*/  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  /*r1*/  [1, 0, 0, 0, 0,17, 0, 0, 0,18, 0, 0, 0, 0, 0, 1],  // FLIPPERS@(5,1) FIRE_BOOTS@(9,1)
+  /*r2*/  [1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1],  // gap@col1,4,11,14
+  /*r3*/  [1, 0, 1, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1, 0, 1],  // chips@(3,3)(10,3)
+  /*r4*/  [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+  /*r5*/  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  /*r6*/  [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],  // gap@col3, col12
+  /*r7*/  [1, 4, 4, 0, 4, 4, 4, 2, 4, 2, 4, 4, 0, 4, 4, 1],  // WATER + chips@(7,7)(9,7)
+  /*r8*/  [1, 4, 4, 0, 4, 4, 4, 4, 4, 4, 4, 4, 0, 4, 4, 1],  // WATER
+  /*r9*/  [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],  // gap@col3, col12
+  /*r10*/ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],  // open corridor
+  /*r11*/ [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],  // gap@col3, col12
+  /*r12*/ [1, 5, 5, 0, 5, 5, 5, 2, 5, 2, 5, 5, 0, 5, 5, 1],  // FIRE + chips@(7,12)(9,12)
+  /*r13*/ [1, 6, 6, 6,27,27,27,27,27,27, 6, 6, 6, 6, 0, 1],  // ICE + FORCE_E + ICE
+  /*r14*/ [1, 0, 0, 2, 0, 0, 0, 0, 3, 0, 0, 2, 0, 0, 0, 1],  // chips@(3,14)(11,14) exit@(8,14)
+  /*r15*/ [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+];
+// chips: (3,3)(10,3)(7,7)(9,7)(7,12)(9,12)(3,14)(11,14) = 8   exit: (8,14)
+
 // ── Assemble LEVELS array ───────────────────────────────────
 
 // Deep-copy a 2-D map array so game mutation doesn't affect the template
@@ -359,6 +485,73 @@ const LEVELS = [
     width:  16,
     height: 16,
   },
+  // ── NEW LEVELS ─────────────────────────────────────────────
+  {
+    number: 6,
+    title:  'Warp Zone',
+    hint:   'Step on a teleport tile ✦ to warp to the next one!  Use them to skip between rooms.',
+    timeLimit: 0,
+    map:    _copyMap(_L6_MAP),
+    playerStart: { x: 1, y: 1 },
+    entities: [],
+    width:  16,
+    height: 16,
+  },
+  {
+    number: 7,
+    title:  'Ice World',
+    hint:   'Grab the flippers 💧 before you enter the water zone.  The ice corridor slides you across — use the dry gaps at columns 3 and 12!',
+    timeLimit: 0,
+    map:    _copyMap(_L7_MAP),
+    playerStart: { x: 1, y: 1 },
+    entities: [],
+    width:  16,
+    height: 16,
+  },
+  {
+    number: 8,
+    title:  'Power Surge',
+    hint:   'Press the GREEN BUTTON to open the toggle doors.  The BLUE BUTTON reverses nearby tanks.  Watch out for the bouncing ball!',
+    timeLimit: 200,
+    map:    _copyMap(_L8_MAP),
+    playerStart: { x: 1, y: 1 },
+    entities: [
+      { type: E.BALL,  x: 7, y: 7,  dir: D.E },  // bounces across middle chip row
+      { type: E.TEETH, x: 8, y: 11, dir: D.N },  // chases player in lower room
+    ],
+    width:  16,
+    height: 16,
+  },
+  {
+    number: 9,
+    title:  'Bomb Run',
+    hint:   'Bombs lurk in columns 6 and 8 of the enclosed rooms — avoid those paths!  Navigate safely around them to collect all chips.',
+    timeLimit: 250,
+    map:    _copyMap(_L9_MAP),
+    playerStart: { x: 1, y: 1 },
+    entities: [
+      { type: E.BUG,      x: 5, y: 5,  dir: D.N },  // upper-section patrol
+      { type: E.FIREBALL, x: 9, y: 9,  dir: D.E },  // mid-section patrol
+      { type: E.TEETH,    x: 7, y: 12, dir: D.N },  // chases player in lower area
+    ],
+    width:  16,
+    height: 16,
+  },
+  {
+    number: 10,
+    title:  'Neon Overdrive',
+    hint:   'Collect FLIPPERS and FIRE BOOTS in row 1.  Water zone: swim for chips.  Fire zone: walk through flames.  Ice+Force corridor leads to the exit!',
+    timeLimit: 400,
+    map:    _copyMap(_L10_MAP),
+    playerStart: { x: 1, y: 1 },
+    entities: [
+      { type: E.BUG,      x: 7, y: 5,  dir: D.N },  // upper section
+      { type: E.FIREBALL, x: 7, y: 10, dir: D.W },  // open middle corridor
+      { type: E.TEETH,    x: 5, y: 3,  dir: D.S },  // upper room, chases player
+    ],
+    width:  16,
+    height: 16,
+  },
 ];
 
 // ============================================================
@@ -366,40 +559,41 @@ const LEVELS = [
 // ============================================================
 
 const COLORS = {
-  floor:     '#c8b890',
-  wall:      '#607080',
-  wallLight: '#8090a0',
-  wallDark:  '#303840',
-  chip:      '#ffd700',
-  chipBg:    '#1a1a3a',
-  exit:      '#00cc66',
-  exitLock:  '#336644',
-  water:     '#2266ff',
-  waterFoam: '#4488ff',
-  fire:      '#ff6600',
-  fireTip:   '#ffcc00',
-  ice:       '#aaddff',
-  iceDark:   '#88bbdd',
-  dirt:      '#996633',
-  dirtDark:  '#774411',
-  gravel:    '#888888',
-  gravelDot: '#aaaaaa',
-  hint:      '#aaaa00',
-  teleport:  '#9933ff',
-  bomb:      '#222222',
-  thief:     '#660066',
-  toggle:    '#ff8800',
-  greenBtn:  '#00bb00',
-  blueBtn:   '#0044bb',
-  forceArr:  '#ffee88',
+  // Retro-neon palette
+  floor:     '#c8a84a',   // warm golden sand
+  wall:      '#2b3068',   // deep indigo
+  wallLight: '#4a5ab8',   // neon indigo highlight
+  wallDark:  '#141830',   // deep shadow
+  chip:      '#00ffee',   // neon cyan
+  chipBg:    '#001c30',   // dark navy chip bg
+  exit:      '#39ff14',   // neon green
+  exitLock:  '#1a4d08',   // locked dark green
+  water:     '#0055cc',   // deep ocean blue
+  waterFoam: '#33aaff',   // bright foam highlight
+  fire:      '#ff3300',   // intense red-orange
+  fireTip:   '#ffff00',   // bright yellow tip
+  ice:       '#a8e4f8',   // crisp ice blue
+  iceDark:   '#6cc4e8',   // deeper ice
+  dirt:      '#7a4520',   // rich earth brown
+  dirtDark:  '#4d2a10',   // dark soil
+  gravel:    '#646474',   // cool gray gravel
+  gravelDot: '#aaaacc',   // violet-gray pebbles
+  hint:      '#ffdd00',   // bright yellow hint
+  teleport:  '#cc00ff',   // vivid magenta-purple
+  bomb:      '#111111',   // very dark
+  thief:     '#aa00aa',   // vivid purple thief
+  toggle:    '#ff6600',   // orange toggle
+  greenBtn:  '#00ee44',   // neon green button
+  blueBtn:   '#0066ff',   // bright blue button
+  forceArr:  '#ffffff',   // white force arrows
 };
 
-const KEY_COLORS   = { [T.KEY_BLUE]:'#2244ff',   [T.KEY_RED]:'#ee2222',   [T.KEY_YELLOW]:'#ffdd00', [T.KEY_GREEN]:'#22cc22'  };
-const DOOR_COLORS  = { [T.DOOR_BLUE]:'#2244ff',  [T.DOOR_RED]:'#ee2222',  [T.DOOR_YELLOW]:'#ffdd00',[T.DOOR_GREEN]:'#22cc22' };
-const BOOT_COLORS  = { [T.FLIPPERS]:'#2266ff',   [T.FIRE_BOOTS]:'#ff6600',[T.ICE_SKATES]:'#aaddff', [T.SUCTION_BOOTS]:'#888888' };
+const KEY_COLORS   = { [T.KEY_BLUE]:'#2255ff',   [T.KEY_RED]:'#ff2222',   [T.KEY_YELLOW]:'#ffdd00', [T.KEY_GREEN]:'#22ee22'  };
+const DOOR_COLORS  = { [T.DOOR_BLUE]:'#2255ff',  [T.DOOR_RED]:'#ff2222',  [T.DOOR_YELLOW]:'#ffdd00',[T.DOOR_GREEN]:'#22ee22' };
+const BOOT_COLORS  = { [T.FLIPPERS]:'#0055cc',   [T.FIRE_BOOTS]:'#ff3300',[T.ICE_SKATES]:'#a8e4f8', [T.SUCTION_BOOTS]:'#888888' };
 const BOOT_LABELS  = { [T.FLIPPERS]:'F',         [T.FIRE_BOOTS]:'🔥',      [T.ICE_SKATES]:'❄',      [T.SUCTION_BOOTS]:'S' };
 const BOOT_ICONS   = { [T.FLIPPERS]:'💧',        [T.FIRE_BOOTS]:'🔥',      [T.ICE_SKATES]:'❄',      [T.SUCTION_BOOTS]:'〒' };
-const ENEMY_COLORS = { [E.BUG]:'#cc0000', [E.FIREBALL]:'#ff6600', [E.BALL]:'#ff88ff', [E.TANK]:'#228822', [E.GLIDER]:'#880088', [E.TEETH]:'#ffcc00', [E.WALKER]:'#888888' };
+const ENEMY_COLORS = { [E.BUG]:'#ff2222', [E.FIREBALL]:'#ff6600', [E.BALL]:'#ff55ff', [E.TANK]:'#22cc44', [E.GLIDER]:'#aa00ff', [E.TEETH]:'#ffdd00', [E.WALKER]:'#aaaaaa' };
 
 class Renderer {
   constructor(canvas) {
@@ -490,29 +684,49 @@ class Renderer {
     const ts = this.ts;
     ctx.fillStyle = COLORS.floor;
     ctx.fillRect(sx, sy, ts, ts);
-    // subtle grid lines
-    ctx.strokeStyle = 'rgba(0,0,0,0.12)';
-    ctx.lineWidth = 0.5;
-    ctx.strokeRect(sx + 0.25, sy + 0.25, ts - 0.5, ts - 0.5);
+    // subtle tile grout lines
+    ctx.strokeStyle = 'rgba(0,0,0,0.18)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(sx + 0.5, sy + 0.5, ts - 1, ts - 1);
+    // interior highlight dot
+    ctx.fillStyle = 'rgba(255,255,255,0.08)';
+    ctx.fillRect(sx + 3, sy + 3, ts - 6, ts - 6);
   }
 
   _drawWall(ctx, sx, sy) {
     const ts = this.ts;
+    // Base indigo fill
     ctx.fillStyle = COLORS.wall;
     ctx.fillRect(sx, sy, ts, ts);
-    // 3-D bevel
+    // Neon bevel — top and left (bright)
     ctx.fillStyle = COLORS.wallLight;
-    ctx.fillRect(sx, sy, ts, 3);
-    ctx.fillRect(sx, sy, 3, ts);
+    ctx.fillRect(sx, sy, ts, 4);
+    ctx.fillRect(sx, sy, 4, ts);
+    // Bottom and right shadow
     ctx.fillStyle = COLORS.wallDark;
-    ctx.fillRect(sx, sy + ts - 3, ts, 3);
-    ctx.fillRect(sx + ts - 3, sy, 3, ts);
+    ctx.fillRect(sx, sy + ts - 4, ts, 4);
+    ctx.fillRect(sx + ts - 4, sy, 4, ts);
+    // Centre brick texture — two horizontal lines
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    const mid = Math.floor(ts / 2);
+    ctx.fillRect(sx + 4, sy + mid - 1, ts - 8, 2);
+    // Vertical dividers alternating per row
+    const vert = ((sx / ts + sy / ts) % 2 === 0) ? ts * 0.35 : ts * 0.65;
+    ctx.fillRect(sx + Math.round(vert), sy + 4, 2, mid - 5);
+    const vert2 = ((sx / ts + sy / ts) % 2 === 0) ? ts * 0.65 : ts * 0.35;
+    ctx.fillRect(sx + Math.round(vert2), sy + mid + 3, 2, ts - mid - 7);
   }
 
   _drawChip(ctx, sx, sy) {
     const ts = this.ts;
+    // Dark navy background
     ctx.fillStyle = COLORS.chipBg;
-    ctx.fillRect(sx + 4, sy + 4, ts - 8, ts - 8);
+    ctx.fillRect(sx + 3, sy + 3, ts - 6, ts - 6);
+    // Glow ring
+    ctx.strokeStyle = COLORS.chip;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(sx + 3, sy + 3, ts - 6, ts - 6);
+    // Neon star
     ctx.fillStyle = COLORS.chip;
     ctx.font = `bold ${ts - 10}px serif`;
     ctx.textAlign = 'center';
@@ -522,67 +736,90 @@ class Renderer {
 
   _drawExit(ctx, sx, sy, open) {
     const ts = this.ts;
-    ctx.fillStyle = open ? COLORS.exit : COLORS.exitLock;
-    ctx.fillRect(sx + 2, sy + 2, ts - 4, ts - 4);
-    // checkerboard pattern
-    const checker = open ? '#00aa55' : '#224433';
+    const base    = open ? COLORS.exit    : COLORS.exitLock;
+    const checker = open ? '#22cc00'      : '#0d3004';
+    ctx.fillStyle = base;
+    ctx.fillRect(sx, sy, ts, ts);
+    // 4×4 checkerboard
+    const cell = ts / 4;
     for (let r = 0; r < 4; r++) {
       for (let c = 0; c < 4; c++) {
         if ((r + c) % 2 === 0) {
           ctx.fillStyle = checker;
-          ctx.fillRect(sx + 2 + c * ((ts - 4) / 4), sy + 2 + r * ((ts - 4) / 4), (ts - 4) / 4, (ts - 4) / 4);
+          ctx.fillRect(sx + c * cell, sy + r * cell, cell, cell);
         }
       }
     }
-    if (open) {
-      ctx.fillStyle = '#ffffff';
-      ctx.font = `bold 14px monospace`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('EXIT', sx + ts / 2, sy + ts / 2);
-    } else {
-      ctx.fillStyle = '#aaccaa';
-      ctx.font = `10px monospace`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('LOCK', sx + ts / 2, sy + ts / 2);
-    }
+    // Border
+    ctx.strokeStyle = open ? '#ffffff' : '#336622';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(sx + 1, sy + 1, ts - 2, ts - 2);
+    // Label
+    ctx.fillStyle = open ? '#ffffff' : '#66bb44';
+    ctx.font = `bold ${open ? 11 : 9}px monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(open ? 'EXIT' : 'LOCK', sx + ts / 2, sy + ts / 2);
   }
 
   _drawWater(ctx, sx, sy) {
     const ts = this.ts;
+    // Deep blue base
     ctx.fillStyle = COLORS.water;
     ctx.fillRect(sx, sy, ts, ts);
-    ctx.fillStyle = COLORS.waterFoam;
-    ctx.font = `${ts - 6}px serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('≈', sx + ts / 2, sy + ts / 2);
+    // Wave lines
+    ctx.strokeStyle = COLORS.waterFoam;
+    ctx.lineWidth = 2;
+    for (let i = 0; i < 3; i++) {
+      const wy = sy + 8 + i * 10;
+      ctx.beginPath();
+      ctx.moveTo(sx + 3,      wy);
+      ctx.quadraticCurveTo(sx + ts / 4,     wy - 4, sx + ts / 2,     wy);
+      ctx.quadraticCurveTo(sx + ts * 3 / 4, wy + 4, sx + ts - 3,     wy);
+      ctx.stroke();
+    }
   }
 
   _drawFire(ctx, sx, sy) {
     const ts = this.ts;
-    ctx.fillStyle = '#331100';
+    // Dark ember base
+    ctx.fillStyle = '#1a0800';
     ctx.fillRect(sx, sy, ts, ts);
+    // Outer orange flame
     ctx.fillStyle = COLORS.fire;
-    ctx.font = `${ts - 4}px serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('🔥', sx + ts / 2, sy + ts / 2);
+    ctx.beginPath();
+    ctx.moveTo(sx + ts / 2, sy + 2);
+    ctx.lineTo(sx + ts - 5, sy + ts - 5);
+    ctx.lineTo(sx + 5,      sy + ts - 5);
+    ctx.closePath();
+    ctx.fill();
+    // Inner yellow core
+    ctx.fillStyle = COLORS.fireTip;
+    ctx.beginPath();
+    ctx.moveTo(sx + ts / 2, sy + 10);
+    ctx.lineTo(sx + ts / 2 + 8, sy + ts - 8);
+    ctx.lineTo(sx + ts / 2 - 8, sy + ts - 8);
+    ctx.closePath();
+    ctx.fill();
   }
 
   _drawIce(ctx, tile, sx, sy) {
     const ts = this.ts;
+    // Icy blue fill
     ctx.fillStyle = COLORS.ice;
     ctx.fillRect(sx, sy, ts, ts);
+    // Crystalline highlight
+    ctx.fillStyle = 'rgba(255,255,255,0.45)';
+    ctx.fillRect(sx + 4, sy + 4, ts / 3, ts / 3);
+    // Snowflake
     ctx.fillStyle = COLORS.iceDark;
-    ctx.font = `${ts - 8}px serif`;
+    ctx.font = `${ts - 10}px serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('❄', sx + ts / 2, sy + ts / 2);
-    // corner indicator
+    // Corner redirect diagonal
     if (tile !== T.ICE) {
-      ctx.strokeStyle = '#5599cc';
+      ctx.strokeStyle = '#2299cc';
       ctx.lineWidth = 3;
       ctx.beginPath();
       if (tile === T.ICE_NE) { ctx.moveTo(sx, sy + ts); ctx.lineTo(sx + ts, sy); }
@@ -597,13 +834,16 @@ class Renderer {
     const ts = this.ts;
     ctx.fillStyle = COLORS.dirt;
     ctx.fillRect(sx, sy, ts, ts);
-    // speckles
+    // textured speckles
     ctx.fillStyle = COLORS.dirtDark;
-    for (let i = 0; i < 6; i++) {
-      const bx = sx + 6 + (i * 7) % (ts - 12);
-      const by = sy + 6 + (i * 11) % (ts - 12);
+    for (let i = 0; i < 8; i++) {
+      const bx = sx + 4 + (i * 7 + 3) % (ts - 8);
+      const by = sy + 4 + (i * 11 + 5) % (ts - 8);
       ctx.fillRect(bx, by, 3, 3);
     }
+    // Light streak
+    ctx.fillStyle = 'rgba(255,200,100,0.12)';
+    ctx.fillRect(sx + 3, sy + 3, ts - 6, 5);
   }
 
   _drawGravel(ctx, sx, sy) {
@@ -611,21 +851,26 @@ class Renderer {
     ctx.fillStyle = COLORS.gravel;
     ctx.fillRect(sx, sy, ts, ts);
     ctx.fillStyle = COLORS.gravelDot;
-    for (let i = 0; i < 10; i++) {
-      const gx = sx + 4 + (i * 9) % (ts - 8);
-      const gy = sy + 4 + (i * 7) % (ts - 8);
+    for (let i = 0; i < 12; i++) {
+      const gx = sx + 4 + (i * 9 + 2) % (ts - 8);
+      const gy = sy + 4 + (i * 7 + 3) % (ts - 8);
+      const r  = 1 + (i % 3);
       ctx.beginPath();
-      ctx.arc(gx, gy, 2, 0, Math.PI * 2);
+      ctx.arc(gx, gy, r, 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
   _drawHint(ctx, sx, sy) {
     const ts = this.ts;
+    // Dark yellow background
+    ctx.fillStyle = '#332200';
+    ctx.fillRect(sx, sy, ts, ts);
     ctx.fillStyle = COLORS.hint;
-    ctx.fillRect(sx + 2, sy + 2, ts - 4, ts - 4);
-    ctx.fillStyle = '#ffffff';
-    ctx.font = `bold ${ts - 8}px serif`;
+    ctx.fillRect(sx + 3, sy + 3, ts - 6, ts - 6);
+    // Question mark
+    ctx.fillStyle = '#000000';
+    ctx.font = `bold ${ts - 8}px monospace`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('?', sx + ts / 2, sy + ts / 2);
@@ -633,33 +878,64 @@ class Renderer {
 
   _drawTeleport(ctx, sx, sy) {
     const ts = this.ts;
+    // Dark background
+    ctx.fillStyle = '#110022';
+    ctx.fillRect(sx, sy, ts, ts);
+    // Concentric glow rings
+    const cx = sx + ts / 2, cy = sy + ts / 2;
+    for (let r = ts / 2 - 3; r > 4; r -= 7) {
+      ctx.strokeStyle = `rgba(204,0,255,${0.3 + (ts / 2 - r) / ts})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    // Star icon
     ctx.fillStyle = COLORS.teleport;
-    ctx.fillRect(sx + 2, sy + 2, ts - 4, ts - 4);
-    ctx.fillStyle = '#cc88ff';
-    ctx.font = `${ts - 8}px serif`;
+    ctx.font = `${ts - 10}px serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('✦', sx + ts / 2, sy + ts / 2);
+    ctx.fillText('✦', cx, cy);
   }
 
   _drawBomb(ctx, sx, sy) {
     const ts = this.ts;
+    const cx = sx + ts / 2, cy = sy + ts / 2 + 3;
+    // Body
     ctx.fillStyle = '#111111';
     ctx.beginPath();
-    ctx.arc(sx + ts / 2, sy + ts / 2 + 3, ts / 2 - 6, 0, Math.PI * 2);
+    ctx.arc(cx, cy, ts / 2 - 6, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = '#555';
+    ctx.strokeStyle = '#444444';
     ctx.lineWidth = 2;
     ctx.stroke();
-    ctx.fillStyle = '#ff2200';
-    ctx.fillRect(sx + ts / 2 - 2, sy + 4, 4, 8);
+    // Highlight
+    ctx.fillStyle = 'rgba(255,255,255,0.18)';
+    ctx.beginPath();
+    ctx.arc(cx - 5, cy - 5, ts / 8, 0, Math.PI * 2);
+    ctx.fill();
+    // Fuse
+    ctx.strokeStyle = '#ff4400';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - ts / 2 + 9);
+    ctx.lineTo(cx + 6, cy - ts / 2 + 2);
+    ctx.stroke();
+    // Spark
+    ctx.fillStyle = COLORS.fireTip;
+    ctx.beginPath();
+    ctx.arc(cx + 7, cy - ts / 2 + 1, 3, 0, Math.PI * 2);
+    ctx.fill();
   }
 
   _drawThief(ctx, sx, sy) {
     const ts = this.ts;
     ctx.fillStyle = COLORS.thief;
     ctx.fillRect(sx + 2, sy + 2, ts - 4, ts - 4);
-    ctx.fillStyle = '#cc44cc';
+    ctx.strokeStyle = '#ff44ff';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(sx + 2, sy + 2, ts - 4, ts - 4);
+    ctx.fillStyle = '#ee88ee';
     ctx.font = `${ts - 8}px serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -668,9 +944,20 @@ class Renderer {
 
   _drawToggle(ctx, sx, sy, closed) {
     const ts = this.ts;
-    ctx.fillStyle = closed ? COLORS.toggle : COLORS.floor;
-    ctx.fillRect(sx, sy, ts, ts);
-    if (!closed) {
+    if (closed) {
+      ctx.fillStyle = COLORS.toggle;
+      ctx.fillRect(sx, sy, ts, ts);
+      // Hatching to signal it's solid
+      ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+      ctx.lineWidth = 2;
+      for (let i = 0; i < ts * 2; i += 10) {
+        ctx.beginPath();
+        ctx.moveTo(sx + i, sy);
+        ctx.lineTo(sx, sy + i);
+        ctx.stroke();
+      }
+    } else {
+      this._drawFloor(ctx, sx, sy);
       ctx.strokeStyle = COLORS.toggle;
       ctx.lineWidth = 2;
       ctx.strokeRect(sx + 2, sy + 2, ts - 4, ts - 4);
@@ -679,20 +966,32 @@ class Renderer {
 
   _drawButton(ctx, sx, sy, color) {
     const ts = this.ts;
+    // Sunken floor look
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    ctx.fillRect(sx + 4, sy + 4, ts - 8, ts - 8);
+    // Button disc
     ctx.fillStyle = color;
     ctx.beginPath();
-    ctx.arc(sx + ts / 2, sy + ts / 2, ts / 2 - 6, 0, Math.PI * 2);
+    ctx.arc(sx + ts / 2, sy + ts / 2, ts / 2 - 8, 0, Math.PI * 2);
+    ctx.fill();
+    // Highlight
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.beginPath();
+    ctx.arc(sx + ts / 2 - 3, sy + ts / 2 - 3, ts / 6, 0, Math.PI * 2);
     ctx.fill();
   }
 
   _drawForce(ctx, tile, sx, sy) {
     const ts = this.ts;
-    ctx.fillStyle = '#c8b030';
+    ctx.fillStyle = '#6c5400';
     ctx.fillRect(sx, sy, ts, ts);
+    // Arrow background stripe
+    ctx.fillStyle = '#a07c00';
+    ctx.fillRect(sx + 4, sy + 4, ts - 8, ts - 8);
     const dir = FORCE_DIR[tile];
     const arrowMap = { [D.N]: '↑', [D.S]: '↓', [D.E]: '→', [D.W]: '←' };
     ctx.fillStyle = COLORS.forceArr;
-    ctx.font = `bold ${ts - 6}px serif`;
+    ctx.font = `bold ${ts - 4}px serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(arrowMap[dir], sx + ts / 2, sy + ts / 2);
@@ -700,31 +999,63 @@ class Renderer {
 
   _drawKey(ctx, tile, sx, sy) {
     const ts = this.ts;
-    ctx.fillStyle = KEY_COLORS[tile] || '#fff';
+    const col = KEY_COLORS[tile] || '#fff';
+    // Background circle
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+    ctx.beginPath();
+    ctx.arc(sx + ts / 2, sy + ts / 2, ts / 2 - 4, 0, Math.PI * 2);
+    ctx.fill();
+    // Key head
+    ctx.fillStyle = col;
     ctx.beginPath();
     ctx.arc(sx + ts / 2, sy + ts / 3, ts / 4, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillRect(sx + ts / 2 - 3, sy + ts / 3, 6, ts / 2);
-    ctx.fillRect(sx + ts / 2 - 3, sy + ts / 3 + ts / 4, 10, 5);
-    ctx.fillRect(sx + ts / 2 - 3, sy + ts / 3 + ts / 4 + 8, 7, 5);
+    // Key hole
+    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    ctx.beginPath();
+    ctx.arc(sx + ts / 2, sy + ts / 3, ts / 10, 0, Math.PI * 2);
+    ctx.fill();
+    // Shaft
+    ctx.fillStyle = col;
+    ctx.fillRect(sx + ts / 2 - 3, sy + ts / 3 + 2, 6, ts / 2 - 2);
+    // Teeth
+    ctx.fillRect(sx + ts / 2 + 3, sy + ts / 3 + ts / 5,     8, 4);
+    ctx.fillRect(sx + ts / 2 + 3, sy + ts / 3 + ts / 5 + 8, 6, 4);
   }
 
   _drawDoor(ctx, tile, sx, sy) {
     const ts = this.ts;
-    ctx.fillStyle = DOOR_COLORS[tile] || '#888';
-    ctx.fillRect(sx + 4, sy, ts - 8, ts);
-    ctx.fillStyle = 'rgba(0,0,0,0.4)';
-    ctx.fillRect(sx + ts / 2 - 4, sy + ts / 2 - 4, 8, 8);
-    ctx.fillStyle = '#ffee88';
+    const col = DOOR_COLORS[tile] || '#888';
+    // Door frame
+    ctx.fillStyle = col;
+    ctx.fillRect(sx + 3, sy, ts - 6, ts);
+    // Darker panel
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+    ctx.fillRect(sx + 6, sy + 4, ts - 12, ts / 2 - 4);
+    ctx.fillRect(sx + 6, sy + ts / 2 + 2, ts - 12, ts / 2 - 6);
+    // Keyhole
+    ctx.fillStyle = 'rgba(0,0,0,0.5)';
     ctx.beginPath();
-    ctx.arc(sx + ts / 2, sy + ts / 2, 3, 0, Math.PI * 2);
+    ctx.arc(sx + ts / 2, sy + ts / 2 - 3, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillRect(sx + ts / 2 - 2, sy + ts / 2 - 3, 4, 8);
+    // Gleam
+    ctx.fillStyle = '#ffff88';
+    ctx.beginPath();
+    ctx.arc(sx + ts / 2, sy + ts / 2 - 3, 2, 0, Math.PI * 2);
     ctx.fill();
   }
 
   _drawBoot(ctx, tile, sx, sy) {
     const ts = this.ts;
-    ctx.fillStyle = BOOT_COLORS[tile] || '#888';
-    ctx.fillRect(sx + 6, sy + 6, ts - 12, ts - 12);
+    const col = BOOT_COLORS[tile] || '#888';
+    // Rounded-looking background (using fillRect for broad compatibility)
+    ctx.fillStyle = col;
+    ctx.fillRect(sx + 4, sy + 4, ts - 8, ts - 8);
+    // Inner darker area
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    ctx.fillRect(sx + 7, sy + 7, ts - 14, ts - 14);
+    // Icon
     ctx.fillStyle = '#ffffff';
     ctx.font = `${ts - 14}px serif`;
     ctx.textAlign = 'center';
@@ -740,29 +1071,31 @@ class Renderer {
 
   _drawPlayer(ctx, ent, sx, sy) {
     const ts = this.ts;
-    // Body
-    ctx.fillStyle = '#2244cc';
-    ctx.fillRect(sx + 8, sy + 8, ts - 16, ts - 10);
+    const cx = sx + ts / 2;
+    // Body — brighter blue suit
+    ctx.fillStyle = '#2255ee';
+    ctx.fillRect(sx + 8, sy + 10, ts - 16, ts - 14);
+    // Suit highlight
+    ctx.fillStyle = '#4477ff';
+    ctx.fillRect(sx + 8, sy + 10, ts - 16, 4);
     // Head
     ctx.fillStyle = '#ffcc99';
     ctx.beginPath();
-    ctx.arc(sx + ts / 2, sy + ts / 3, ts / 5, 0, Math.PI * 2);
+    ctx.arc(cx, sy + ts / 3, ts / 5, 0, Math.PI * 2);
     ctx.fill();
-    // Eyes
-    ctx.fillStyle = '#333';
-    const eyeOff = ent.dir === D.E ? 3 : ent.dir === D.W ? -3 : 0;
-    ctx.beginPath(); ctx.arc(sx + ts / 2 - 3 + eyeOff, sy + ts / 3 - 1, 2, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.arc(sx + ts / 2 + 3 + eyeOff, sy + ts / 3 - 1, 2, 0, Math.PI * 2); ctx.fill();
+    // Eyes (shift with direction)
+    const eyeOff = ent.dir === D.E ? 4 : ent.dir === D.W ? -4 : 0;
+    ctx.fillStyle = '#222';
+    ctx.beginPath(); ctx.arc(cx - 3 + eyeOff, sy + ts / 3 - 1, 2, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx + 3 + eyeOff, sy + ts / 3 - 1, 2, 0, Math.PI * 2); ctx.fill();
     // Helmet
-    ctx.fillStyle = '#1133aa';
+    ctx.fillStyle = '#1144cc';
     ctx.beginPath();
-    ctx.arc(sx + ts / 2, sy + ts / 3, ts / 5, Math.PI, 0);
+    ctx.arc(cx, sy + ts / 3, ts / 5, Math.PI, 0);
     ctx.fill();
-    // Direction indicator
-    ctx.fillStyle = '#ffdd00';
-    ctx.font = `10px sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
+    // Helmet visor glint
+    ctx.fillStyle = 'rgba(180,220,255,0.5)';
+    ctx.fillRect(cx - 5, sy + ts / 3 - ts / 5 + 1, 10, 3);
   }
 
   _drawBlock(ctx, sx, sy) {

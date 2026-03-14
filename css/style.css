@@ -9,15 +9,15 @@
 }
 
 :root {
-  --bg:        #0d0d1a;
-  --panel:     #1a1a30;
-  --border:    #3a3a6a;
-  --accent:    #ffcc00;
-  --accent2:   #44aaff;
-  --danger:    #ff4444;
-  --text:      #e0e0f0;
-  --text-dim:  #888aaa;
-  --chip-blue: #2244cc;
+  --bg:        #080812;
+  --panel:     #13132a;
+  --border:    #2b3068;
+  --accent:    #00ffee;
+  --accent2:   #aa00ff;
+  --danger:    #ff3333;
+  --text:      #d8e0f8;
+  --text-dim:  #7888bb;
+  --chip-blue: #2b3068;
 }
 
 html, body {

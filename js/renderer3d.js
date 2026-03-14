@@ -39,20 +39,20 @@ class Renderer3D {
       [E.TEETH]: '👾',[E.WALKER]: '?',
     };
     this._tileSprites = {
-      [T.CHIP]:          { color: '#ffd700', sym: '★' },
-      [T.EXIT]:          { color: '#00dd66', sym: '⊞' },
-      [T.KEY_BLUE]:      { color: '#2244ff', sym: 'K' },
-      [T.KEY_RED]:       { color: '#ee2222', sym: 'K' },
+      [T.CHIP]:          { color: '#00ffee', sym: '★' },
+      [T.EXIT]:          { color: '#39ff14', sym: '⊞' },
+      [T.KEY_BLUE]:      { color: '#2255ff', sym: 'K' },
+      [T.KEY_RED]:       { color: '#ff2222', sym: 'K' },
       [T.KEY_YELLOW]:    { color: '#ffdd00', sym: 'K' },
-      [T.KEY_GREEN]:     { color: '#22cc22', sym: 'K' },
-      [T.FLIPPERS]:      { color: '#2266ff', sym: '💧' },
-      [T.FIRE_BOOTS]:    { color: '#ff6600', sym: '🔥' },
-      [T.ICE_SKATES]:    { color: '#aaddff', sym: '❄'  },
+      [T.KEY_GREEN]:     { color: '#22ee22', sym: 'K' },
+      [T.FLIPPERS]:      { color: '#0055cc', sym: '💧' },
+      [T.FIRE_BOOTS]:    { color: '#ff3300', sym: '🔥' },
+      [T.ICE_SKATES]:    { color: '#a8e4f8', sym: '❄'  },
       [T.SUCTION_BOOTS]: { color: '#888888', sym: 'S'  },
-      [T.BOMB]:          { color: '#333333', sym: '💣' },
-      [T.THIEF]:         { color: '#660066', sym: '👤' },
-      [T.HINT]:          { color: '#aaaa00', sym: '?'  },
-      [T.TELEPORT]:      { color: '#9933ff', sym: '✦'  },
+      [T.BOMB]:          { color: '#444444', sym: '💣' },
+      [T.THIEF]:         { color: '#aa00aa', sym: '👤' },
+      [T.HINT]:          { color: '#ffdd00', sym: '?'  },
+      [T.TELEPORT]:      { color: '#cc00ff', sym: '✦'  },
     };
 
     // Pre-allocate the floor ImageData buffer – reused every frame to avoid
@@ -87,10 +87,10 @@ class Renderer3D {
     const { W, H } = this;
     const half = H >> 1;
 
-    // Ceiling: simple dark gradient (fast).
+    // Ceiling: deep neon-navy gradient (retro sci-fi sky).
     const cg = ctx.createLinearGradient(0, 0, 0, half);
-    cg.addColorStop(0, '#07070f');
-    cg.addColorStop(1, '#121225');
+    cg.addColorStop(0, '#04040e');
+    cg.addColorStop(1, '#0a0a22');
     ctx.fillStyle = cg;
     ctx.fillRect(0, 0, W, half);
 
@@ -124,27 +124,27 @@ class Renderer3D {
 
         let r, g, b;
         switch (tile) {
-          case T.WATER:                                           r=10;  g=55;  b=160; break;
-          case T.FIRE:                                            r=160; g=55;  b=0;   break;
+          case T.WATER:                                           r=0;   g=55;  b=180; break;
+          case T.FIRE:                                            r=180; g=40;  b=0;   break;
           case T.ICE: case T.ICE_NE: case T.ICE_NW:
-          case T.ICE_SE: case T.ICE_SW:                          r=150; g=200; b=230; break;
-          case T.EXIT:                                            r=0;   g=155; b=85;  break;
-          case T.DIRT:                                            r=110; g=78;  b=48;  break;
-          case T.GRAVEL:                                          r=90;  g=90;  b=90;  break;
-          case T.HINT:                                            r=140; g=140; b=0;   break;
-          case T.TELEPORT:                                        r=110; g=40;  b=180; break;
-          case T.THIEF:                                           r=80;  g=0;   b=80;  break;
+          case T.ICE_SE: case T.ICE_SW:                          r=140; g=200; b=240; break;
+          case T.EXIT:                                            r=30;  g=200; b=10;  break;
+          case T.DIRT:                                            r=100; g=60;  b=28;  break;
+          case T.GRAVEL:                                          r=80;  g=80;  b=95;  break;
+          case T.HINT:                                            r=180; g=160; b=0;   break;
+          case T.TELEPORT:                                        r=150; g=0;   b=220; break;
+          case T.THIEF:                                           r=140; g=0;   b=140; break;
           case T.FORCE_N: case T.FORCE_S:
-          case T.FORCE_E: case T.FORCE_W:                        r=180; g=160; b=30;  break;
-          case T.GREEN_BUTTON:                                    r=0;   g=140; b=0;   break;
-          case T.BLUE_BUTTON:                                     r=0;   g=50;  b=160; break;
-          case T.TOGGLE_OPEN:                                     r=160; g=90;  b=20;  break;
-          default:                                                r=92;  g=74;  b=52;
+          case T.FORCE_E: case T.FORCE_W:                        r=160; g=120; b=0;   break;
+          case T.GREEN_BUTTON:                                    r=0;   g=180; b=40;  break;
+          case T.BLUE_BUTTON:                                     r=0;   g=60;  b=220; break;
+          case T.TOGGLE_OPEN:                                     r=180; g=80;  b=0;   break;
+          default:                                                r=170; g=130; b=58;  // neon-golden sand
         }
 
-        r = Math.round(r * (1 - fog) + 6  * fog);
-        g = Math.round(g * (1 - fog) + 6  * fog);
-        b = Math.round(b * (1 - fog) + 16 * fog);
+        r = Math.round(r * (1 - fog) + 4  * fog);
+        g = Math.round(g * (1 - fog) + 4  * fog);
+        b = Math.round(b * (1 - fog) + 14 * fog);
 
         const i = (bufRow * W + x) << 2;
         d[i]   = r;
@@ -166,13 +166,13 @@ class Renderer3D {
   _wallColor(tile, side) {
     // side=1 (N/S face) is rendered slightly darker for a depth cue.
     switch (tile) {
-      case T.WALL:          return side ? '#3d4f5f' : '#5d7180';
-      case T.DOOR_BLUE:     return side ? '#1628a0' : '#2244ee';
-      case T.DOOR_RED:      return side ? '#a01010' : '#ee2222';
-      case T.DOOR_YELLOW:   return side ? '#a09900' : '#ddcc00';
-      case T.DOOR_GREEN:    return side ? '#0f8020' : '#22bb33';
-      case T.TOGGLE_CLOSED: return side ? '#8f4d00' : '#cc6e00';
-      default:              return side ? '#3a3a3a' : '#555555';
+      case T.WALL:          return side ? '#1e2557' : '#2b3068';  // deep indigo
+      case T.DOOR_BLUE:     return side ? '#1020cc' : '#2255ff';
+      case T.DOOR_RED:      return side ? '#cc1010' : '#ff2222';
+      case T.DOOR_YELLOW:   return side ? '#aaaa00' : '#dddd00';
+      case T.DOOR_GREEN:    return side ? '#0a9020' : '#22ee33';
+      case T.TOGGLE_CLOSED: return side ? '#993300' : '#cc5500';
+      default:              return side ? '#252525' : '#404040';
     }
   }
 
