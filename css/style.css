@@ -210,6 +210,8 @@ html, body {
 
 #game-canvas {
   display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
@@ -335,8 +337,4 @@ html, body {
 @media (max-width: 400px) {
   .hud-value { font-size: 18px; }
   .mc-btn { width: 44px; height: 44px; font-size: 17px; }
-}
-
-@media (min-width: 641px) {
-  #mobile-controls { display: none; }
 }
