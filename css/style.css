@@ -338,3 +338,27 @@ html, body {
   .hud-value { font-size: 18px; }
   .mc-btn { width: 44px; height: 44px; font-size: 17px; }
 }
+
+@media (min-width: 641px) {
+  #mobile-controls { display: none; }
+
+  /* Make the game screen fill the full viewport height */
+  #game-screen {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  /* Let the canvas wrapper grow to fill remaining space after HUD / title bar */
+  #canvas-wrap {
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* Scale canvas by height (not width) to fill the available space */
+  #game-canvas {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+  }
+}
