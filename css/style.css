@@ -342,23 +342,46 @@ html, body {
 @media (min-width: 641px) {
   #mobile-controls { display: none; }
 
-  /* Make the game screen fill the full viewport height */
+  /* Ensure body fills full viewport width so nothing is clipped */
+  body {
+    width: 100%;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  /* Let the app act as a centering row for the game screen */
+  #app {
+    max-width: none;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Square game screen: as wide as the viewport height (tallest square
+     that fits both dimensions), centered horizontally */
   #game-screen {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    width: min(100vh, 100vw);
   }
 
-  /* Let the canvas wrapper grow to fill remaining space after HUD / title bar */
+  /* Canvas wrapper fills the remaining height after HUD and title bar */
   #canvas-wrap {
     flex: 1;
     min-height: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  /* Scale canvas by height (not width) to fill the available space */
+  /* Canvas scales to fill available height, width = height (square) */
   #game-canvas {
-    width: auto;
     height: 100%;
+    width: auto;
+    aspect-ratio: 1 / 1;
     max-width: 100%;
+    max-height: 100%;
   }
 }
