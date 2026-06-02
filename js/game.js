@@ -604,6 +604,9 @@ class Renderer {
     this.ts     = TILE_SIZE;
     this.canvas.width  = VIEW_W * this.ts;
     this.canvas.height = VIEW_H * this.ts;
+    // Instance-level palettes so themed renderers (e.g. The Reveal) can override them
+    this.keyColors  = KEY_COLORS;
+    this.doorColors = DOOR_COLORS;
   }
 
   draw(game) {
@@ -1001,7 +1004,7 @@ class Renderer {
 
   _drawKey(ctx, tile, sx, sy) {
     const ts = this.ts;
-    const col = KEY_COLORS[tile] || '#fff';
+    const col = this.keyColors[tile] || '#fff';
     // Background circle
     ctx.fillStyle = 'rgba(0,0,0,0.3)';
     ctx.beginPath();
@@ -1027,7 +1030,7 @@ class Renderer {
 
   _drawDoor(ctx, tile, sx, sy) {
     const ts = this.ts;
-    const col = DOOR_COLORS[tile] || '#888';
+    const col = this.doorColors[tile] || '#888';
     // Door frame
     ctx.fillStyle = col;
     ctx.fillRect(sx + 3, sy, ts - 6, ts);
@@ -1265,6 +1268,19 @@ class AudioManager {
   bump()         { this._beep(110, 0.05, 'sawtooth', 0.08); }
   pickupItem()   { this._beep(660, 0.1, 'triangle', 0.12); }
   splash()       { this._beep(300, 0.15, 'sawtooth', 0.1); }
+
+  // ── The Reveal mode sounds ──
+  countdownBeep()   { this._beep(440, 0.2, 'sine', 0.2); }
+  balloonTap(step)  { this._beep(330 + step * 90, 0.12, 'sine', 0.2); }
+  balloonPop()      { this._beep(120, 0.25, 'sawtooth', 0.3); setTimeout(() => this._beep(80, 0.3, 'square', 0.2), 60); }
+  revealFanfare()   {
+    const notes = [523, 523, 523, 659, 784, 784, 1047];
+    const times = [0, 150, 300, 450, 700, 900, 1150];
+    notes.forEach((freq, i) => {
+      const len = i === notes.length - 1 ? 0.7 : 0.18;
+      setTimeout(() => this._beep(freq, len, 'triangle', 0.22), times[i]);
+    });
+  }
 }
 
 // ============================================================
@@ -1293,6 +1309,9 @@ class Game {
   constructor() {
     this.currentLevel = 0;
     this.gameMode     = '2d';   // '2d' or '3d'
+    this.levelSet     = LEVELS; // active level set (LEVELS or REVEAL_LEVELS)
+    this.revealMode   = false;  // true when playing "The Reveal" surprise mode
+    this._confetti    = null;   // confetti show running on the reveal screen
     this.audio        = new AudioManager();
     this.renderer     = null;
     this.running      = false;
@@ -1310,7 +1329,7 @@ class Game {
   // ── Initialise / Load Level ────────────────────────────────
 
   loadLevel(index) {
-    const def = LEVELS[index];
+    const def = this.levelSet[index];
 
     // Deep copy the map so we can mutate it
     this.map   = def.map.map(row => [...row]);
@@ -1382,7 +1401,10 @@ class Game {
     } else {
       el('hud-time').textContent = '∞';
     }
-    el('level-title-text').textContent = `Level ${def.number}: ${def.title}`;
+    el('hud-chips-label').textContent = this.revealMode ? 'BOTTLES LEFT' : 'CHIPS LEFT';
+    el('level-title-text').textContent = this.revealMode
+      ? `The Reveal — Stage ${def.number}: ${def.title}`
+      : `Level ${def.number}: ${def.title}`;
     this._refreshInventoryHUD();
     this._hideHint();
   }
@@ -1391,11 +1413,12 @@ class Game {
     // Keys
     const keysEl = document.getElementById('hud-keys');
     keysEl.innerHTML = '';
+    const keyColors = (this.renderer && this.renderer.keyColors) || KEY_COLORS;
     for (const [tile, count] of Object.entries(this.inventory.keys)) {
       for (let i = 0; i < count; i++) {
         const div = document.createElement('div');
         div.className = 'inv-item';
-        div.style.background = KEY_COLORS[tile] || '#888';
+        div.style.background = keyColors[tile] || '#888';
         div.textContent = 'K';
         keysEl.appendChild(div);
       }
@@ -1743,7 +1766,10 @@ class Game {
 
   _killPlayer(msg) {
     this.dead     = true;
-    this.deathMsg = msg;
+    // In The Reveal every hazard is a runaway toy — keep it friendly!
+    this.deathMsg = this.revealMode
+      ? 'A runaway toy caught Shmo! Try again, Big Brother — the secret is waiting!'
+      : msg;
     this.audio.death();
   }
 
@@ -1906,7 +1932,7 @@ class Game {
   _showHint() {
     const banner  = document.getElementById('hint-banner');
     const textEl  = document.getElementById('hint-text');
-    textEl.textContent = LEVELS[this.currentLevel].hint;
+    textEl.textContent = this.levelSet[this.currentLevel].hint;
     banner.classList.remove('hidden');
   }
 
@@ -1992,13 +2018,20 @@ class Game {
 
     if (this.won && !this._winHandled) {
       this._winHandled = true;
-      const isLast = this.currentLevel >= LEVELS.length - 1;
+      const isLast = this.currentLevel >= this.levelSet.length - 1;
       setTimeout(() => {
         if (isLast) {
-          this._showScreen('complete-screen');
+          if (this.revealMode) {
+            // The final stage of The Reveal leads to the big secret!
+            startRevealCelebration(this);
+          } else {
+            this._showScreen('complete-screen');
+          }
         } else {
-          document.getElementById('win-msg').textContent =
-            `Level ${LEVELS[this.currentLevel].number} complete!`;
+          const def = this.levelSet[this.currentLevel];
+          document.getElementById('win-msg').textContent = this.revealMode
+            ? `Stage ${def.number} complete! The big secret is getting closer...`
+            : `Level ${def.number} complete!`;
           this._showScreen('win-screen');
         }
       }, 400);
@@ -2019,14 +2052,20 @@ class Game {
     const canvas = document.getElementById('game-canvas');
 
     // Shared helper: begin playing in the given mode from level 0.
+    // Modes: '2d', '3d', or 'reveal' (The Reveal — top-down with its own
+    // level set, pastel renderer, and surprise ending).
     const _startGame = (mode) => {
       // Clear any stale input state accumulated while on the title screen.
       this.keysHeld.clear();
       this.queuedDir = null;
       this.lastMove  = 0;
 
-      this.gameMode  = mode;
-      this.renderer  = mode === '3d' ? new Renderer3D(canvas) : new Renderer(canvas);
+      this.revealMode = mode === 'reveal';
+      this.levelSet   = this.revealMode ? REVEAL_LEVELS : LEVELS;
+      this.gameMode   = mode === '3d' ? '3d' : '2d';
+      this.renderer   = mode === '3d'    ? new Renderer3D(canvas)
+                      : this.revealMode  ? new RendererReveal(canvas)
+                      :                    new Renderer(canvas);
       this.audio._resume();
       this.currentLevel  = 0;
       this._deathHandled = false;
@@ -2042,6 +2081,7 @@ class Game {
     // Mode-select buttons on the title screen.
     document.getElementById('start-2d-btn').addEventListener('click', () => _startGame('2d'));
     document.getElementById('start-3d-btn').addEventListener('click', () => _startGame('3d'));
+    document.getElementById('start-reveal-btn').addEventListener('click', () => _startGame('reveal'));
 
     document.getElementById('next-level-btn').addEventListener('click', () => {
       this.currentLevel++;
@@ -2059,15 +2099,20 @@ class Game {
     document.getElementById('timeout-retry-btn').addEventListener('click', () => this._retryLevel());
 
     // "Play Again" returns to the title screen so the player can re-choose mode.
-    document.getElementById('play-again-btn').addEventListener('click', () => {
-      if (this.rafId) { cancelAnimationFrame(this.rafId); this.rafId = null; }
-      this.running = false;
-      // Clear input state so no key-press leaks into the next game start.
-      this.keysHeld.clear();
-      this.queuedDir = null;
-      this.lastMove  = 0;
-      this._showScreen('title-screen');
-    });
+    document.getElementById('play-again-btn').addEventListener('click', () => this._returnToTitle());
+  }
+
+  // Stop the game loop, clear input state, and show the title screen.
+  // Used by the "play again" button and The Reveal's "back to title" button.
+  _returnToTitle() {
+    if (this.rafId) { cancelAnimationFrame(this.rafId); this.rafId = null; }
+    this.running = false;
+    if (this._confetti) { this._confetti.stop(); this._confetti = null; }
+    // Clear input state so no key-press leaks into the next game start.
+    this.keysHeld.clear();
+    this.queuedDir = null;
+    this.lastMove  = 0;
+    this._showScreen('title-screen');
   }
 
   _retryLevel() {
@@ -2088,5 +2133,6 @@ class Game {
 
 window.addEventListener('DOMContentLoaded', () => {
   const game = new Game();
+  window.shmoGame = game;   // exposed for debugging / automated tests
   game.start();
 });

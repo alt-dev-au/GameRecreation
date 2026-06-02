@@ -132,6 +132,190 @@ html, body {
   box-shadow: 0 6px 20px rgba(170,0,255,0.6);
 }
 
+/* ── The Reveal: title-screen button ─────────────────────── */
+.reveal-select {
+  margin-top: 16px;
+}
+
+.reveal-tagline {
+  color: #f0a8c8;
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-top: 10px;
+}
+
+.btn-reveal {
+  background: linear-gradient(90deg, #ff8fb3 0%, #ffb6d9 35%, #a8d4ff 65%, #6cb4ff 100%);
+  color: #3a1030;
+  box-shadow: 0 4px 16px rgba(255,143,179,0.5);
+  animation: reveal-pulse 1.6s ease-in-out infinite;
+}
+.btn-reveal:hover, .btn-reveal:focus {
+  background: linear-gradient(90deg, #ffa8c4 0%, #ffc8e4 35%, #bce0ff 65%, #88c4ff 100%);
+  box-shadow: 0 6px 24px rgba(255,143,179,0.8);
+}
+
+@keyframes reveal-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.05); }
+}
+
+/* ── The Reveal: secret screen ───────────────────────────── */
+#reveal-screen {
+  position: relative;
+}
+#reveal-screen.active {
+  display: block;
+  background: linear-gradient(160deg, #2a1030 0%, #3a1840 40%, #1a2a4a 100%);
+  min-height: 100vh;
+}
+
+#confetti-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.reveal-content {
+  position: relative;
+  z-index: 10;
+}
+
+.reveal-phase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.reveal-phase.hidden { display: none; }
+
+#reveal-intro h2,
+#reveal-balloon-phase h2 {
+  color: #ffb6d9;
+  text-shadow: 0 0 16px rgba(255,143,179,0.6);
+}
+
+/* Countdown numbers */
+#reveal-countdown {
+  font-size: 110px;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 0 0 30px rgba(255,215,0,0.8);
+  min-height: 130px;
+  line-height: 130px;
+}
+#reveal-countdown.count-pop {
+  animation: count-pop 0.9s ease-out;
+}
+@keyframes count-pop {
+  0%   { transform: scale(0.2); opacity: 0; }
+  40%  { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1);   opacity: 0.9; }
+}
+
+/* The mystery balloon */
+#reveal-balloon {
+  width: 140px;
+  height: 170px;
+  margin-top: 20px;
+  background: radial-gradient(circle at 35% 30%, #d8b8ff 0%, #aa66ee 55%, #7a3ab8 100%);
+  border-radius: 50% 50% 50% 50% / 55% 55% 45% 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  position: relative;
+  transition: transform 0.12s ease-out;
+  animation: balloon-float 2.2s ease-in-out infinite;
+  box-shadow: 0 8px 40px rgba(170,102,238,0.5);
+}
+#reveal-balloon::after {
+  /* balloon string */
+  content: '';
+  position: absolute;
+  bottom: -56px;
+  left: 50%;
+  width: 2px;
+  height: 56px;
+  background: rgba(255,255,255,0.6);
+}
+#reveal-balloon span {
+  font-size: 64px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 16px rgba(255,255,255,0.8);
+  pointer-events: none;
+}
+#reveal-balloon.popped {
+  animation: balloon-pop 0.45s ease-out forwards;
+}
+@keyframes balloon-float {
+  0%, 100% { margin-top: 20px; }
+  50%      { margin-top: 6px; }
+}
+@keyframes balloon-pop {
+  0%   { transform: scale(2.1);  opacity: 1; }
+  30%  { transform: scale(2.6);  opacity: 1; }
+  100% { transform: scale(3.4);  opacity: 0; }
+}
+
+/* The big secret */
+.reveal-bow {
+  font-size: 72px;
+  animation: bounce 1s ease infinite alternate;
+}
+
+#reveal-headline {
+  font-size: clamp(40px, 12vw, 72px);
+  color: #ff69b4;
+  letter-spacing: 4px;
+  text-shadow: 0 0 24px rgba(255,105,180,0.9), 0 0 60px rgba(255,105,180,0.5);
+  animation: headline-in 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28) both;
+}
+
+/* Scoped under #reveal-screen so these out-rank the generic
+   .overlay-content p rule without needing !important */
+#reveal-screen .reveal-message {
+  font-size: 20px;
+  color: #ffd8ea;
+  max-width: none;
+  line-height: 1.8;
+  animation: fade-up 0.8s ease-out 0.6s both;
+}
+#reveal-screen .reveal-message span {
+  font-size: clamp(28px, 8vw, 44px);
+  font-weight: bold;
+  color: #ffb6d9;
+  text-shadow: 0 0 20px rgba(255,143,179,0.8);
+  letter-spacing: 3px;
+}
+
+#reveal-screen .reveal-congrats {
+  font-size: 16px;
+  color: #f0c8dc;
+  animation: fade-up 0.8s ease-out 1.4s both;
+}
+
+#reveal-home-btn {
+  animation: fade-up 0.8s ease-out 2.2s both;
+}
+
+@keyframes headline-in {
+  0%   { transform: scale(0.1) rotate(-8deg); opacity: 0; }
+  100% { transform: scale(1)   rotate(0);     opacity: 1; }
+}
+
+@keyframes fade-up {
+  0%   { transform: translateY(24px); opacity: 0; }
+  100% { transform: translateY(0);    opacity: 1; }
+}
+
 /* ── HUD ─────────────────────────────────────────────── */
 #hud {
   display: flex;
@@ -359,8 +543,11 @@ html, body {
   }
 
   /* Square game screen: as wide as the viewport height (tallest square
-     that fits both dimensions), centered horizontally */
-  #game-screen {
+     that fits both dimensions), centered horizontally.
+     Scoped to .active so the game screen stays hidden behind other screens
+     (title, win, reveal, ...) — the bare #game-screen selector would
+     out-rank the .screen display:none rule. */
+  #game-screen.active {
     display: flex;
     flex-direction: column;
     height: 100vh;
