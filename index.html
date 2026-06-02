@@ -21,6 +21,10 @@
           <button id="start-2d-btn" class="btn-primary">▶ PLAY 2D</button>
           <button id="start-3d-btn" class="btn-primary btn-3d">▶ PLAY 3D</button>
         </div>
+        <div class="mode-select reveal-select">
+          <button id="start-reveal-btn" class="btn-primary btn-reveal">🍼 THE REVEAL 🎀</button>
+        </div>
+        <p class="reveal-tagline">A special surprise mission for the Big Brother...</p>
         <div class="controls-hint">
           <p>2D mode: Arrow Keys / WASD to move in any direction</p>
           <p>3D mode: ↑↓ Move forward/back &nbsp;·&nbsp; ←→ Turn</p>
@@ -42,7 +46,7 @@
             <div id="hud-time" class="hud-value">---</div>
           </div>
           <div class="hud-block">
-            <div class="hud-label">CHIPS LEFT</div>
+            <div class="hud-label" id="hud-chips-label">CHIPS LEFT</div>
             <div id="hud-chips" class="hud-value">0</div>
           </div>
         </div>
@@ -122,9 +126,42 @@
       </div>
     </div>
 
+    <!-- The Reveal — Big Secret Screen -->
+    <div id="reveal-screen" class="screen">
+      <canvas id="confetti-canvas"></canvas>
+      <div class="overlay-content reveal-content">
+
+        <!-- Phase 1: countdown -->
+        <div id="reveal-intro" class="reveal-phase">
+          <div class="overlay-icon">💌</div>
+          <h2>YOU DID IT, BIG BROTHER!</h2>
+          <p>The stork has a special delivery for your family...</p>
+          <div id="reveal-countdown"></div>
+        </div>
+
+        <!-- Phase 2: pop the mystery balloon -->
+        <div id="reveal-balloon-phase" class="reveal-phase hidden">
+          <h2>POP THE MYSTERY BALLOON!</h2>
+          <p>Tap it as fast as you can!</p>
+          <div id="reveal-balloon"><span>?</span></div>
+        </div>
+
+        <!-- Phase 3: the big secret -->
+        <div id="reveal-final-phase" class="reveal-phase hidden">
+          <div class="reveal-bow">🎀</div>
+          <h1 id="reveal-headline">IT'S A GIRL!</h1>
+          <p class="reveal-message">You're going to have a<br><span>BABY&nbsp;SISTER!</span></p>
+          <p class="reveal-congrats">Congratulations, Big Brother! 👶💕</p>
+          <button id="reveal-home-btn" class="btn-primary btn-reveal">💖 BACK TO TITLE 💖</button>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
   <script src="js/game.js"></script>
   <script src="js/renderer3d.js"></script>
+  <script src="js/reveal.js"></script>
 </body>
 </html>

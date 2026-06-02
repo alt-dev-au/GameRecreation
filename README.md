@@ -21,6 +21,7 @@ This recreation includes:
 - **5 hand-crafted levels** of increasing difficulty
 - **2D mode** — classic top-down tile view
 - **3D mode** — first-person raycasting perspective (Wolfenstein-style)
+- **The Reveal mode** 🍼🎀 — a special baby-themed surprise mission: guide the Big Brother through three nursery stages, dodge runaway toys, collect baby bottles, and pop the mystery balloon at the end to discover the family's big secret!
 - Enemies (bugs, tanks, balls, gliders) with authentic movement logic
 - Keys and colored doors
 - Ice, water, fire, and force-floor tiles with matching boot pickups
@@ -62,7 +63,8 @@ Alternatively, open `index.html` directly in your browser (most features work wi
 │   └── style.css       # Retro dark theme styles
 └── js/
     ├── game.js         # Game logic, 2D renderer, level data, entities
-    └── renderer3d.js   # First-person 3D raycasting renderer
+    ├── renderer3d.js   # First-person 3D raycasting renderer
+    └── reveal.js       # "The Reveal" surprise mode: nursery levels, pastel renderer, celebration
 ```
 
 ---
